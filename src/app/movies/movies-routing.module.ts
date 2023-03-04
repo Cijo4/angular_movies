@@ -13,17 +13,13 @@ const routes: Routes = [
         component: MovieListComponent
       },
       {
-        path: 'movie-details',
+        path: 'movie-details/:id',
         component: MovieDetailsComponent
       },
       {
-        path: 'fovourites',
+        path: 'favourites',
         component: FavouriteMoviesComponent
       },
-      {
-        path: '**',
-        redirectTo: 'movies'
-      }
     ]
   }
 ]

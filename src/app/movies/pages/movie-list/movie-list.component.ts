@@ -44,4 +44,8 @@ export class MovieListComponent implements OnInit {
     );    
   }
 
+  goToMovieDetails(){
+    console.log()
+  }
+
 }
