@@ -10,6 +10,8 @@ import { MovieService } from '../../services/movie.service';
 export class MovieListComponent implements OnInit {
 
   public movieList: Movie[] =[]
+
+  public movieTitle:string = ''
   
 
   constructor(private movieService: MovieService) { }
@@ -26,8 +28,20 @@ export class MovieListComponent implements OnInit {
     )
   }
 
-  searchMovie(title:string){
-    this.movieService.searchMovies('bla') //TODO
+  searchMovie() {
+    this.movieService.searchMovies(this.movieTitle).subscribe(
+      resp => {
+        if (resp.results.length === 0) {
+          console.log('No se encontraron resultados');
+        } else {
+          this.movieList = resp.results;
+          console.log(this.movieList)
+        }
+      },
+      error => {
+        console.log('Error al buscar la película:', error);
+      }
+    );    
   }
 
 }

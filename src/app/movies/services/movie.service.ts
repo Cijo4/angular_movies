@@ -15,7 +15,7 @@ export class MovieService {
   constructor(private http: HttpClient) { }
 
   getPopularMovies(): Observable<MovieList> {
-    return this.http.get<MovieList>(`${this.url}?api_key=${this.apiKey}`);
+    return this.http.get<MovieList>(`${this.url}/movie/popular?api_key=${this.apiKey}`);
   };
 
   searchMovies(query: string, page: number = 1): Observable<MovieList> {
