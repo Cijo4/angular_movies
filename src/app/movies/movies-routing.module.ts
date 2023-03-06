@@ -16,13 +16,13 @@ const routes: Routes = [
         component: MovieListComponent
       },
       {
-        path: 'movie-details/:id',
-        component: MovieDetailsComponent
-      },
-      {
         path: 'favourites',
         component: FavouriteMoviesComponent,
-        canActivate: [AuthGuard]
+        canActivate: [ AuthGuard ]
+      },
+      {
+        path: 'movie-details/:id',
+        component: MovieDetailsComponent
       },
       {
         path: '**',

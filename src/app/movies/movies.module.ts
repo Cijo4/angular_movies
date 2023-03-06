@@ -11,7 +11,6 @@ import { MoviesRoutingModule } from './movies-routing.module';
 import { RootPageComponent } from './pages/root-page/root-page.component';
 import { MovieCardComponent } from './components/movie-card/movie-card.component';
 import { MovieContainerComponent } from './components/movie-container/movie-container.component';
-import { AuthModule } from '../auth/auth.module';
 
 
 

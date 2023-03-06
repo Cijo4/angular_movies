@@ -3,45 +3,40 @@ import { Injectable } from '@angular/core';
 import { Params } from '@angular/router';
 import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { MovieList } from '../interfaces/movie-list.interface';
+import { MovieList, Movie } from '../interfaces/movie-list.interface';
+import { UserDetails } from '../../auth/interfaces/user.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MovieService {
-
   private apiKey = environment.apiKey;
   private url = environment.apiUrl;
-  private accessToken!: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getPopularMovies(page: number = 1): Observable<MovieList> {
     const params: Params = {
       api_key: this.apiKey,
-      page
-    }
+      page,
+    };
     return this.http.get<MovieList>(`${this.url}/movie/popular`, { params });
-  };
+  }
 
   searchMovies(query: string, page: number = 1): Observable<MovieList> {
     const params = {
       page,
       query,
-      api_key: this.apiKey
+      api_key: this.apiKey,
     };
 
-    return this.http.get<MovieList>(
-      `${this.url}/search/movie`,
-      { params }
-    )
-  };
+    return this.http.get<MovieList>(`${this.url}/search/movie`, { params });
+  }
 
   getMovieById(movieId: string): Observable<any> {
     const params: Params = {
-      api_key: this.apiKey
-    }
-
+      api_key: this.apiKey,
+    };
 
     const url = `${this.url}/movie/${movieId}`;
     return this.http.get(url, { params }).pipe(
@@ -52,7 +47,30 @@ export class MovieService {
     );
   }
 
-  
+  markMovieAsFavourite(movieId:string, session_id:string):Observable<Movie>{
+    const params: Params = {
+      api_key: this.apiKey,
+      session_id
+    };
 
+    const body = {
+      media_type: "movie",
+      media_id: movieId,
+      favourite: true,
+    };
+    console.log(params)
+    console.log(body)
 
+    //return this.http.post<any>(this.url+'/account/{account_id}/favorite',body, {params})
+    return this.http.get<any>(this.url+'/account', {params})
+    // return this.http.get<any>(this.url+'/account', {params})
+    // .pipe(
+    //   switchMap(({id}) =>{
+    //     const userId = id;
+    //     console.log('ID',id)
+    //     return this.http.post<Movie>(this.url+'/account/'+userId+'/favorite',body, {params})
+    //   }),
+    //   tap(resp=>console.log(resp))
+    // )
+  }
 }

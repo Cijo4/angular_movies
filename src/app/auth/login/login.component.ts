@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { ResponseToken } from '../interfaces/user.interface';
 import { AuthService } from '../services/auth.service';
 
@@ -14,6 +15,10 @@ export class LoginComponent implements OnInit {
   error: boolean = false;
   token!: ResponseToken;
 
+  tokensito!:string;
+
+  private subscription!: Subscription;
+
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -23,18 +28,29 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    this.authService.login(this.username, this.password).subscribe(
-      (resp) => {
-        this.token = resp;
-        localStorage.setItem('loginData', JSON.stringify(resp));
-        console.log('Token', this.token);
-        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        this.router.navigateByUrl(returnUrl);
-      },
-      (err) => {
-        this.error = true;
-        console.log('Error:', err);
-      }
-    );
+    this.subscription = this.authService
+      .login(this.username, this.password)
+      .subscribe(
+        (resp) => {
+          this.token = resp;
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+          this.router.navigateByUrl(returnUrl);
+        },
+        (err) => {
+          this.error = true;
+          console.log('Error:', err);
+        }
+      );
+  }
+
+  session(){
+    const loginData = JSON.parse(localStorage.getItem('loginData') || '');
+    console.log(loginData['request_token']);  
+
+    this.authService.getSessionId(loginData['request_token']).subscribe(console.log)
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

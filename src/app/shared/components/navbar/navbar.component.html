@@ -1,18 +1,50 @@
-<nav class="navbar bg-light navbar-expand-lg bg-body-tertiary mx-auto mb-3 rounded-bottom">
-    <div class="container-fluid">
-        <!-- <a class="navbar-brand" href="#"><img class="" src="../../../assets/images/icon.png" alt="home icon"></a> -->
-        <img class="home_icon" src="../../../assets/images/icon.png" alt="home icon" routerLink="/movies">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item" *ngFor="let route of routes" >
-                    <a class="nav-link" aria-current="page" routerLink={{route.route}} routerLinkActive="active" >{{route.name}}</a>
-                </li>      
-            </ul>
-        </div>
+<nav
+  class="navbar bg-light navbar-expand-lg bg-body-tertiary mx-auto mb-3 rounded-bottom"
+>
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="#"><img class="" src="../../../assets/images/icon.png" alt="home icon"></a> -->
+    <img
+      class="home_icon"
+      src="../../../assets/images/icon.png"
+      alt="home icon"
+      routerLink="/movies"
+    />
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse ml-5" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngFor="let route of routes">
+          <a
+            class="nav-link"
+            aria-current="page"
+            routerLink="{{ route.route }}"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >{{ route.name }}</a
+          >
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <button
+            [ngClass]="isLogged ? 'btn-dark' : 'btn-outline-primary'"
+            class="btn"
+            (click)="isLogged ? logout() : login()"
+          >
+            {{ isLogged ? "Logout" : "Login" }}
+          </button>
+        </li>
+      </ul>
     </div>
-   
+  </div>
 </nav>
