@@ -1,11 +1,12 @@
-<div class="jumbotron col ">
-    <div class="row d-flex justify-content-center">
+<div class="row d-flex justify-content-center">
 
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 d-flex justify-content-center mx-auto mb-3">
-            <img class="card-img-top img-fluid" [src]="movie.poster_path | posterImage:'w500' " alt="Card image cap">
-        </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6 d-flex justify-content-center mx-auto mb-3 mt-3">
+        <img class="card-img-top img-fluid rounded " [src]="movie.poster_path | posterImage:'w500' " alt="Card image cap">
+    </div>
 
-        <div class="col">
+    <div class="col mx-auto m-3 d-flex justify-content-center">
+
+        <div class="card details">
             <h1 class="display-4">Movie Information</h1>
             <p class="lead">Below you can find information about a movie:</p>
             <hr class="my-4">
@@ -14,13 +15,13 @@
                     <p><strong>Title:</strong> {{ movie.title }}</p>
                     <p><strong>Original Title:</strong> {{ movie.original_title }}</p>
                     <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
-                    
+
                 </div>
                 <div class="col-md-6">
                     <p><strong>Popularity:</strong> {{ movie.popularity }}</p>
                     <p><strong>Vote Average:</strong> {{ movie.vote_average }}</p>
                     <p><strong>Vote Count:</strong> {{ movie.vote_count }}</p>
-                    
+
                 </div>
             </div>
 
@@ -30,6 +31,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
