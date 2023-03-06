@@ -16,8 +16,12 @@ export class MovieService {
 
   constructor(private http: HttpClient) { }
 
-  getPopularMovies(): Observable<MovieList> {
-    return this.http.get<MovieList>(`${this.url}/movie/popular?api_key=${this.apiKey}`);
+  getPopularMovies(page: number = 1): Observable<MovieList> {
+    const params: Params = {
+      api_key: this.apiKey,
+      page
+    }
+    return this.http.get<MovieList>(`${this.url}/movie/popular`, { params });
   };
 
   searchMovies(query: string, page: number = 1): Observable<MovieList> {
@@ -34,8 +38,13 @@ export class MovieService {
   };
 
   getMovieById(movieId: string): Observable<any> {
-    const url = `${this.url}/movie/${movieId}?api_key=${this.apiKey}`;
-    return this.http.get(url).pipe(
+    const params: Params = {
+      api_key: this.apiKey
+    }
+
+
+    const url = `${this.url}/movie/${movieId}`;
+    return this.http.get(url, { params }).pipe(
       catchError((err) => {
         console.error(err);
         return throwError('Error getting movie details');
@@ -43,56 +52,7 @@ export class MovieService {
     );
   }
 
-  createGuestSession(): Observable<any> {
-    const url = `${this.url}/authentication/guest_session/new?api_key=${this.apiKey}`;
-    return this.http.get(url);
-  }
-
-
-  getRequestToken(): Observable<any> {
-    const url = `${this.url}/authentication/token/new?api_key=${this.apiKey}`;
-    return this.http.get(url);
-  }
-
-  getAuthorizationUrl(requestToken: string, redirectUrl: string): string {
-    return `https://www.themoviedb.org/authenticate/${requestToken}?redirect_to=${redirectUrl}`;
-  }
-
-  createSession(requestToken: string): Observable<any> {
-    const url = `${this.url}/authentication/session/new?api_key=${this.apiKey}`;
-    const body = { request_token: requestToken };
-    return this.http.post(url, body);
-  }
-
-
-  setAccessToken(token: string): void {
-    this.accessToken = token;
-  }
-
-  validateTokenWithLogin(username: string, password: string, requestToken: string): Observable<any> {
-    const url = `${this.url}/authentication/token/validate_with_login?api_key=${this.apiKey}`;
-    const body = { username, password, request_token: requestToken };
-    return this.http.post(url, body);
-  }
-
-
-  login(username: string, password: string) {
-    const queryParams: Params = {
-      apy_key: this.apiKey
-    }
-
-    return this.http.get<any>(this.url + '/authentication/token/new?', { params: queryParams }).pipe(
-      switchMap(({ request_token }) => {
-        const body = {
-          username,
-          password,
-          request_token
-
-        };
-        return this.http.post<any>(this.url+ '/authentication/token/validate_with_login', body, { params: queryParams })
-      }))
-  }
-
+  
 
 
 }

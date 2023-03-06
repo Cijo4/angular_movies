@@ -1,31 +1,36 @@
 <div class="row">
-    <div class="col-md-6 col-sm-6 mx-auto mb-3">
-        <form class="d-flex" role="search" (ngSubmit)="searchMovie()">
+  <div class="col-md-6 col-sm-6 mx-auto mb-3">
+    <form class="d-flex" role="search" (ngSubmit)="searchMovie()">
+      <input
+        class="form-control me-2"
+        type="text"
+        placeholder="Search"
+        aria-label="Search"
+        name="query"
+        [(ngModel)]="query"
+      />
 
-            <input class="form-control me-2" 
-                type="text" placeholder="Search" 
-                aria-label="Search"
-                name="movieTitle"
-                [(ngModel)]="movieTitle">
-
-            <button class="custom-button" type="submit">Search</button>
-        </form>
-    </div>
-
+      <button class="custom-button" type="submit">Search</button>
+    </form>
+  </div>
 </div>
 
-<div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6 mx-auto mb-3" *ngFor="let movie of movieList">
-        <div class="card">
-            <img class="card-img-top" [src]="movie.poster_path | posterImage:'w500' " alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{movie.title}}</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Release Date: {{movie.release_date}}</li>
-                    <li class="list-group-item">Popularity: {{movie.popularity}}</li>
-                </ul>
-            </div>
-            <button class="custom-button" type="submit" [routerLink]="['/movie-details', movie.id]">Know more...</button>
-        </div>
+<ng-container *ngIf="movieList; else loading">
+    <div class="d-flex justify-content-center">
+        <ngb-pagination
+          [boundaryLinks]="true"
+          [page]="movieList.page"
+          [pageSize]="pageSize"
+          [collectionSize]="getMaxCollectionSize(movieList.total_pages)"
+          [maxSize]="3"
+          [rotate]="true"
+          (pageChange)="changePage($event)"
+        ></ngb-pagination>
+
     </div>
-</div>
+  <app-movie-container [movies]="movieList.results"></app-movie-container>
+</ng-container>
+
+<ng-template #loading> 
+    <app-spinner></app-spinner> 
+</ng-template>

@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { FavouriteMoviesComponent } from './pages/favourite-movies/favourite-movies.component';
 import { MovieDetailsComponent } from './pages/movie-details/movie-details.component';
 import { MovieListComponent } from './pages/movie-list/movie-list.component';
+import { RootPageComponent } from './pages/root-page/root-page.component';
 
 const routes: Routes = [
   {
     path: '',
+    component: RootPageComponent,
     children: [
       {
-        path: 'movies',
+        path: '',
         component: MovieListComponent
       },
       {
@@ -18,8 +21,13 @@ const routes: Routes = [
       },
       {
         path: 'favourites',
-        component: FavouriteMoviesComponent
+        component: FavouriteMoviesComponent,
+        canActivate: [AuthGuard]
       },
+      {
+        path: '**',
+        redirectTo: '/404'
+      }
     ]
   }
 ]

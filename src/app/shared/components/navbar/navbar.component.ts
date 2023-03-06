@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { NavRoutes } from '../../interfaces/routes.interface';
 
 @Component({
   selector: 'app-navbar',
@@ -7,13 +8,15 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class NavbarComponent {
 
-  @Output() movieTitleEmit = new EventEmitter<string>()
-  movieTitle:string=''
-
-  emitMovie(){
-    //this.movieTitleEmit.emit(this.movieTitle)
-    console.log(this.movieTitle);
-    
-  }
+ routes: NavRoutes[]=[
+    {
+      name: 'Movies',
+      route: ''
+    },
+    {
+      name:'Favs',
+      route: '/favourites'
+    }
+ ]
 
 }

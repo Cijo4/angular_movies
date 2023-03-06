@@ -1,0 +1,16 @@
+.movies-not-found-cnt {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-family: "Press Start 2P", "Franklin Gothic Medium", "Arial Narrow",
+      Arial, sans-serif;
+    color: #fff;
+  }
+
+  img {
+    max-width: 90%;
+  }
+}
