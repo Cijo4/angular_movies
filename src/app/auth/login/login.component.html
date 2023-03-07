@@ -24,15 +24,23 @@
           required
         />
       </div>
-      <button type="submit" class="btn btn-primary btn-lg btn-block">
-        Iniciar sesión
-      </button>
+
+      <div class="row">
+        <div class="col d-flex flex-column align-items-center">
+          <button type="submit" class="send-btn">Send</button>
+        </div>
+      </div>
     </form>
 
     <div class="alert alert-danger" *ngIf="error">
       The user name or password is not valid.
     </div>
-
   </div>
+ 
 </div>
 
+<div class="row">
+  <div class="col d-flex flex-column align-items-center">
+    <button class="home-button" [routerLink]="['/']">Back to home...</button>
+  </div>
+</div>

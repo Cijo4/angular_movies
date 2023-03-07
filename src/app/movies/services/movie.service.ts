@@ -47,6 +47,7 @@ export class MovieService {
     );
   }
 
+ 
   markMovieAsFavourite(movieId:string, session_id:string):Observable<Movie>{
     const params: Params = {
       api_key: this.apiKey,
@@ -56,21 +57,37 @@ export class MovieService {
     const body = {
       media_type: "movie",
       media_id: movieId,
-      favourite: true,
+      favorite: true,
     };
-    console.log(params)
-    console.log(body)
 
     //return this.http.post<any>(this.url+'/account/{account_id}/favorite',body, {params})
+    
+    //return this.http.get<any>(this.url+'/account', {params})
+    
     return this.http.get<any>(this.url+'/account', {params})
-    // return this.http.get<any>(this.url+'/account', {params})
-    // .pipe(
-    //   switchMap(({id}) =>{
-    //     const userId = id;
-    //     console.log('ID',id)
-    //     return this.http.post<Movie>(this.url+'/account/'+userId+'/favorite',body, {params})
-    //   }),
-    //   tap(resp=>console.log(resp))
-    // )
+    .pipe(
+      switchMap(({id}) =>{
+        const userId = id;
+        console.log('ID',id)
+        return this.http.post<Movie>(this.url+'/account/'+userId+'/favorite',body, {params})
+      }),
+      tap(resp=>console.log(resp))
+    )
+  }
+
+  getFavoriteMovies( session_id:string): Observable<MovieList> {
+    const params: Params = {
+      api_key: this.apiKey,
+      session_id,
+    };
+    return this.http.get<any>(this.url+'/account', {params})
+    .pipe(
+      switchMap(({id}) =>{
+        const userId = id;
+        console.log('ID',id)
+        return this.http.get<MovieList>(this.url+'/account/'+userId+'/favorite/movies', {params})
+      }),
+      tap(resp=>console.log(resp))
+    )
   }
 }

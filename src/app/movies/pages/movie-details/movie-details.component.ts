@@ -8,30 +8,36 @@ import { MovieService } from '../../services/movie.service';
 @Component({
   selector: 'app-movie-details',
   templateUrl: './movie-details.component.html',
-  styleUrls: ['./movie-details.component.scss']
+  styleUrls: ['./movie-details.component.scss'],
 })
 export class MovieDetailsComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
-  movie!: Movie
+  movie!: Movie;
   public userRate: number = 0;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
     private movieService: MovieService
-  ) { }
+  ) {}
 
   get isLogged(): boolean {
     return this.authService.isLogged();
   }
 
   ngOnInit(): void {
-    this.subscription = this.activatedRoute.params.pipe(switchMap(({id}) => {
-      return this.movieService.getMovieById(id)
-    })).subscribe({ 
-      next: movie => this.movie = movie,
-      error: () => { console.log('error') } // TODO: Poner algun error
-    })
+    this.subscription = this.activatedRoute.params
+      .pipe(
+        switchMap(({ id }) => {
+          return this.movieService.getMovieById(id);
+        })
+      )
+      .subscribe({
+        next: (movie) => (this.movie = movie),
+        error: () => {
+          console.log('error');
+        }, // TODO: Poner algun error
+      });
   }
 
   ngOnDestroy(): void {
@@ -42,14 +48,12 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
     console.log('rating');
   }
 
-  addToFavourite(){
-     this.subscription = this.activatedRoute.params.subscribe(({id})=>{
-      const lsSession = localStorage.getItem('session');
-      const sessionId = JSON.parse(lsSession!)
-      const idtoken = sessionId ['session_id']
-      console.log(idtoken)
-      return this.movieService.markMovieAsFavourite(id, idtoken!).subscribe(resp=> console.log(resp))
-     })
+  addToFavourite() {
+    this.subscription = this.activatedRoute.params.subscribe(({ id }) => {
+      const sessionId = JSON.parse(
+        localStorage.getItem('session') ?? ''
+      )?.session_id;
+      return this.movieService.markMovieAsFavourite(id, sessionId!).subscribe();
+    });
   }
-
 }

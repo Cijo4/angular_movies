@@ -1,1 +1,9 @@
-<p>favourite-movies works!</p>
+<ng-container *ngIf="movieList; else loading">
+      
+  <app-movie-container [movies]="movieList.results"></app-movie-container>
+
+</ng-container>
+
+<ng-template #loading> 
+    <app-spinner></app-spinner> 
+</ng-template>
