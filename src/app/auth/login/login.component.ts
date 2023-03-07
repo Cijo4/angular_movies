@@ -49,8 +49,4 @@ export class LoginComponent implements OnInit {
 
     this.authService.getSessionId(loginData['request_token']).subscribe(console.log)
   }
-
-  // ngOnDestroy(): void {
-  //   this.subscription.unsubscribe();
-  // }
 }

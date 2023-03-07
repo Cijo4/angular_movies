@@ -91,10 +91,10 @@ export class AuthService implements OnInit {
 
   ngOnInit(): void {
     const lsLogin = localStorage.getItem(this.localStorageKey);
-    const lsSessionId =localStorage.getItem(this.localStorageKeySession)
+    const lsSessionId = localStorage.getItem(this.localStorageKeySession);
     if (lsLogin) {
       const login: ResponseToken = JSON.parse(lsLogin);
-      const session: SessionIdResponse = JSON.parse(lsSessionId!)
+      const session: SessionIdResponse = JSON.parse(lsSessionId!);
       if (login.expires_at && new Date(login.expires_at) > new Date()) {
         this.loginData = login;
         this.sessionId = session;
