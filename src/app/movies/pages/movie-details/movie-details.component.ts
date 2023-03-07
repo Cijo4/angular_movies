@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, switchMap } from 'rxjs';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { Movie } from '../../interfaces/movie-list.interface';
 import { MovieService } from '../../services/movie.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-movie-details',
@@ -18,7 +19,8 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private router: Router
   ) {}
 
   get isLogged(): boolean {
@@ -35,8 +37,12 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (movie) => (this.movie = movie),
         error: () => {
-          console.log('error');
-        }, // TODO: Poner algun error
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+          });
+        },
       });
   }
 
@@ -49,11 +55,31 @@ export class MovieDetailsComponent implements OnInit, OnDestroy {
   }
 
   addToFavourite() {
+
+    if(!this.isLogged){
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
     this.subscription = this.activatedRoute.params.subscribe(({ id }) => {
       const sessionId = JSON.parse(
         localStorage.getItem('session') ?? ''
       )?.session_id;
-      return this.movieService.markMovieAsFavourite(id, sessionId!).subscribe();
+      this.movieService.markMovieAsFavourite(id, sessionId!).subscribe({
+        next: (resp) => {
+          Swal.fire({
+            title: 'Added to Favourites!',
+            icon: 'success',
+          });
+        },
+        error: () => {
+          Swal.fire({
+            title: 'Error',
+            text: 'There was an error adding the movie to your favourites',
+            icon: 'error',
+          });
+        },
+      });
     });
   }
 }

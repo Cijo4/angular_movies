@@ -41,7 +41,6 @@ export class MovieService {
     const url = `${this.url}/movie/${movieId}`;
     return this.http.get(url, { params }).pipe(
       catchError((err) => {
-        console.error(err);
         return throwError('Error getting movie details');
       })
     );
@@ -62,7 +61,6 @@ export class MovieService {
     return this.http.get<any>(this.url + '/account', { params }).pipe(
       switchMap(({ id }) => {
         const userId = id;
-        console.log('ID', id);
         return this.http.post<Movie>(
           this.url + '/account/' + userId + '/favorite',
           body,
@@ -80,7 +78,6 @@ export class MovieService {
     return this.http.get<any>(this.url + '/account', { params }).pipe(
       switchMap(({ id }) => {
         const userId = id;
-        console.log('ID', id);
         return this.http.get<MovieList>(
           this.url + '/account/' + userId + '/favorite/movies',
           { params }

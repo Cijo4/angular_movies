@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MovieList } from '../../interfaces/movie-list.interface';
 import { MovieService } from '../../services/movie.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-favourite-movies',
@@ -20,7 +21,16 @@ export class FavouriteMoviesComponent implements OnInit, OnDestroy {
     )?.session_id;
     this.subscription = this.movieService
       .getFavoriteMovies(sessionId)
-      .subscribe((movies) => (this.movieList = movies));
+      .subscribe({
+        next: (movies) => (this.movieList = movies),
+        error: () => {
+          Swal.fire({
+            title: 'Error',
+            text: 'There was an error retrieving your favorite movies.',
+            icon: 'error',
+          });
+        },
+      });
   }
 
   ngOnDestroy(): void {

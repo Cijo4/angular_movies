@@ -6,6 +6,7 @@ import {
   MovieList,
 } from 'src/app/movies/interfaces/movie-list.interface';
 import { MovieService } from '../../services/movie.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-movie-list',
@@ -38,7 +39,14 @@ export class MovieListComponent implements OnInit, OnDestroy {
       )
       .subscribe({
         next: (paginatedMovies) => (this.movieList = paginatedMovies),
-        error: () => console.log('Error'), // TODO: Change error handling
+        error: () => {
+          console.log('Error');
+          Swal.fire({
+            title: 'Error',
+            text: 'There was an error retrieving movies.',
+            icon: 'error'
+          });
+        }
       });
   }
 
